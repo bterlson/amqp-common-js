@@ -99,13 +99,12 @@ export type ParsedOutput<T> = {
 export function parseConnectionString<T>(connectionString: string): ParsedOutput<T> {
   return connectionString.trim().split(';').reduce((acc, part) => {
     part = part.trim();
-    const splitIndex = part.indexOf('=');
-
     if (part === '') {
       // parts can be empty
       return acc;
     }
 
+    const splitIndex = part.indexOf('=');
     if (splitIndex === -1) {
       throw new Error("Connection string malformed: each part of the connection string must have an `=` assignment.");
     }
