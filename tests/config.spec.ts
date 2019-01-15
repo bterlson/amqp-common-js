@@ -57,15 +57,14 @@ describe("ConnectionConfig", function () {
       done();
     });
 
-    it("requires a value after an assignment", done => {
+    it("allows an empty value after an assignment", done => {
       const connectionString = `
-        EntityPath=;
+        Endpoint = sb://hostname.servicebus.windows.net/;
+        SharedAccessKey=;
       `;
-
-      should.throw(() => {
-        ConnectionConfig.create(connectionString);
-      }, /Connection string malformed/);
-
+      const config = ConnectionConfig.create(connectionString);
+      config.should.have.property("host").that.equals("hostname.servicebus.windows.net");
+      config.should.have.property("sharedAccessKey").that.equals("");
       done();
     });
 
