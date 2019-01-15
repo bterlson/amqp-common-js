@@ -29,6 +29,32 @@ describe("ConnectionConfig", function () {
       should.not.exist(config.entityPath);
       done();
     });
+
+    it("handles arbitrary whitespace around ; and = elements", done => {
+      const connectionString = `
+        Endpoint = sb://hostname.servicebus.windows.net/;
+        SharedAccessKeyName = sakName;
+        SharedAccessKey = sak;
+        EntityPath = ep;
+      `;
+      const config = ConnectionConfig.create(connectionString);
+      config.should.have.property("host").that.equals("hostname.servicebus.windows.net");
+      config.should.have.property("sharedAccessKeyName").that.equals("sakName");
+      config.should.have.property("sharedAccessKey").that.equals("sak");
+      config.should.have.property("entityPath").that.equals("ep");
+      done();
+    });
+
+    it("requires an assignment for each part", done => {
+      const connectionString = `
+        EntityPath;
+      `;
+
+      should.throw(() => {
+        ConnectionConfig.create(connectionString);
+      }, /Connection string malformed/);
+      done();
+    });
   });
 
   describe("EventHub", function () {

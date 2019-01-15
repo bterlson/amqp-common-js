@@ -84,15 +84,38 @@ export type ParsedOutput<T> = {
 
 /**
  * Parses the connection string and returns an object of type T.
+ *
+ * Connection strings have the following syntax:
+ *
+ * ConnectionString ::= Part { ";" Part } [ ";" ] [ WhiteSpace ]
+ * Part             ::= [ PartLiteral [ "=" PartLiteral ] ]
+ * PartLiteral      ::= [ WhiteSpace ] Literal [ WhiteSpace ]
+ * Literal          ::= ? any sequence of characters except ; or = or WhiteSpace ?
+ * WhiteSpace       ::= ? all whitespace characters including \r and \n ?
+ *
  * @param {string} connectionString The connection string to be parsed.
  * @returns {ParsedOutput<T>} ParsedOutput<T>.
  */
 export function parseConnectionString<T>(connectionString: string): ParsedOutput<T> {
-  return connectionString.split(';').reduce((acc, part) => {
+  return connectionString.trim().split(';').reduce((acc, part) => {
+    part = part.trim();
     const splitIndex = part.indexOf('=');
+
+    if (part === '') {
+      // parts can be empty
+      return acc;
+    }
+
+    if (splitIndex === -1) {
+      throw new Error("Connection string malformed: each part of the connection string must have an `=` assignment.");
+    }
+
+    const key = part.substring(0, splitIndex).trim();
+    const value = part.substring(splitIndex + 1).trim();
+
     return {
       ...acc,
-      [part.substring(0, splitIndex)]: part.substring(splitIndex + 1)
+      [key]: value
     };
   }, {} as any);
 }
