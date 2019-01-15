@@ -45,6 +45,30 @@ describe("ConnectionConfig", function () {
       done();
     });
 
+    it("requires a value before an assignment", done => {
+      const connectionString = `
+        = something;
+      `;
+
+      should.throw(() => {
+        ConnectionConfig.create(connectionString);
+      }, /Connection string malformed/);
+
+      done();
+    });
+
+    it("requires a value after an assignment", done => {
+      const connectionString = `
+        EntityPath=;
+      `;
+
+      should.throw(() => {
+        ConnectionConfig.create(connectionString);
+      }, /Connection string malformed/);
+
+      done();
+    });
+
     it("requires an assignment for each part", done => {
       const connectionString = `
         EntityPath;
@@ -53,6 +77,18 @@ describe("ConnectionConfig", function () {
       should.throw(() => {
         ConnectionConfig.create(connectionString);
       }, /Connection string malformed/);
+      done();
+    });
+
+    it("requires that Endpoint be present in the connection string", done => {
+      const connectionString = `
+        EntityPath=ep;
+      `;
+
+      should.throw(() => {
+        ConnectionConfig.create(connectionString);
+      }, /missing Endpoint/);
+
       done();
     });
   });

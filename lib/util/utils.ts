@@ -112,6 +112,14 @@ export function parseConnectionString<T>(connectionString: string): ParsedOutput
     const key = part.substring(0, splitIndex).trim();
     const value = part.substring(splitIndex + 1).trim();
 
+    if (key === '') {
+      throw new Error('Connection string malformed: missing key for assignment');
+    }
+
+    if (value === '') {
+      throw new Error('Connection string malformed: missing value for assignment');
+    }
+
     return {
       ...acc,
       [key]: value
