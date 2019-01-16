@@ -97,11 +97,15 @@ export type ParsedOutput<T> = {
  * @returns {ParsedOutput<T>} ParsedOutput<T>.
  */
 export function parseConnectionString<T>(connectionString: string): ParsedOutput<T> {
-  return connectionString.trim().split(';').reduce((acc, part) => {
+  const output: { [k: string]: string } = {};
+  const parts = connectionString.trim().split(';');
+
+  for (let part of parts) {
     part = part.trim();
+
     if (part === '') {
       // parts can be empty
-      return acc;
+      continue;
     }
 
     const splitIndex = part.indexOf('=');
@@ -116,11 +120,10 @@ export function parseConnectionString<T>(connectionString: string): ParsedOutput
 
     const value = part.substring(splitIndex + 1).trim();
 
-    return {
-      ...acc,
-      [key]: value
-    };
-  }, {} as any);
+    output[key] = value;
+  }
+
+  return output as any;
 }
 
 /**
