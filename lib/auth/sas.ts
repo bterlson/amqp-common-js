@@ -37,7 +37,7 @@ export class SasTokenProvider implements TokenProvider {
   tokenValidTimeInSeconds: number;
 
   /**
-   * Initializes a new isntance of SasTokenProvider
+   * Initializes a new instance of SasTokenProvider
    * @constructor
    * @param {string} namespace - The namespace of the EventHub/ServiceBus instance.
    * @param {string} keyName - The name of the EventHub/ServiceBus key.
