@@ -7,7 +7,8 @@ export { DataTransformer, DefaultDataTransformer } from "./dataTransformer";
 export { TokenType, TokenProvider, TokenInfo } from "./auth/token";
 export { SasTokenProvider } from "./auth/sas";
 export { IotSasTokenProvider } from "./auth/iotSas";
-export { AadTokenProvider } from "./auth/aad";
+export * from './index.node';
+
 export {
   ConnectionConfig, ConnectionConfigOptions, EventHubConnectionConfig, IotHubConnectionConfig
 } from "./connectionConfig";

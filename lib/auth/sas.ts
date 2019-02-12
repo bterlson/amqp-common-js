@@ -3,8 +3,8 @@
 
 import { parseConnectionString, ServiceBusConnectionStringModel } from "../util/utils";
 import { TokenInfo, TokenProvider, TokenType } from "./token";
-const isBuffer = require("is-buffer");
-const jssha = require("jssha");
+import isBuffer from "is-buffer";
+import jssha from "jssha";
 
 /**
  * @class SasTokenProvider

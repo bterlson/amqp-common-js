@@ -7,6 +7,8 @@ import { DataTransformer, DefaultDataTransformer } from "./dataTransformer";
 import { TokenProvider } from "./auth/token";
 import { ConnectionConfig } from "./connectionConfig";
 import { SasTokenProvider } from "./auth/sas";
+import rhea from "rhea";
+
 import * as Constants from "./util/constants";
 import * as os from "os";
 
@@ -132,12 +134,15 @@ export module ConnectionContextBase {
     if (!parameters || typeof parameters !== "object") {
       throw new Error("'parameters' is a required parameter and must be of type 'object'.");
     }
-    ConnectionConfig.validate(parameters.config,
-      { isEntityPathRequired: parameters.isEntityPathRequired || false });
+    ConnectionConfig.validate(parameters.config, {
+      isEntityPathRequired: parameters.isEntityPathRequired || false
+    });
     const userAgent = parameters.connectionProperties.userAgent;
     if (userAgent.length > Constants.maxUserAgentLength) {
-      throw new Error(`The user-agent string cannot be more than 128 characters in length.` +
-        `The given user-agent string is: ${userAgent} with length: ${userAgent.length}`);
+      throw new Error(
+        `The user-agent string cannot be more than 128 characters in length.` +
+        `The given user-agent string is: ${userAgent} with length: ${userAgent.length}`
+      );
     }
 
     const connectionOptions: ConnectionOptions = {
@@ -145,7 +150,7 @@ export module ConnectionContextBase {
       host: parameters.config.host,
       hostname: parameters.config.host,
       username: parameters.config.sharedAccessKeyName,
-      port: 5671,
+      port: typeof WebSocket === 'undefined' ? 5671 : 443,
       reconnect: false,
       properties: {
         product: parameters.connectionProperties.product,
@@ -157,6 +162,10 @@ export module ConnectionContextBase {
       operationTimeoutInSeconds: parameters.operationTimeoutInSeconds
     };
 
+    if (typeof WebSocket !== 'undefined') {
+      const ws = rhea.websocket_connect(WebSocket);
+      connectionOptions.connection_details = (ws as any)(`wss://${parameters.config.host}:443/$servicebus/websocket`, ["AMQPWSB10"]) as any;
+    }
     const connection = new Connection(connectionOptions);
     const connectionLock = `${Constants.establishConnection}-${generate_uuid()}`;
     const connectionContextBase: ConnectionContextBase = {
@@ -167,9 +176,13 @@ export module ConnectionContextBase {
       connectionId: connection.id,
       cbsSession: new CbsClient(connection, connectionLock),
       config: parameters.config,
-      tokenProvider: parameters.tokenProvider ||
-        new SasTokenProvider(parameters.config.endpoint, parameters.config.sharedAccessKeyName,
-          parameters.config.sharedAccessKey),
+      tokenProvider:
+        parameters.tokenProvider ||
+        new SasTokenProvider(
+          parameters.config.endpoint,
+          parameters.config.sharedAccessKeyName,
+          parameters.config.sharedAccessKey
+        ),
       dataTransformer: parameters.dataTransformer || new DefaultDataTransformer()
     };
 
