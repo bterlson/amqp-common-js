@@ -168,7 +168,11 @@ export module ConnectionContextBase {
         throw new Error('webSocket must be a WebSocket constructor');
       }
       const ws = rhea.websocket_connect(WebSocket);
-      connectionOptions.connection_details = ws(`wss://${parameters.config.host}:443/${parameters.config.webSocketEndpointPath}`, ["AMQPWSB10"], {});
+
+      // connectionOptions is cast to any to work around type errors.
+      // The errors seem spurious and so are ignored.
+      (connectionOptions.connection_details as any) =
+        ws(`wss://${parameters.config.host}:443/${parameters.config.webSocketEndpointPath}`, ["AMQPWSB10"], {});
     }
 
     const connection = new Connection(connectionOptions);
