@@ -8,7 +8,6 @@
   "module": "./dist-esm/lib/index.js",
   "types": "./typings/lib/index.d.ts",
   "dependencies": {
-    "@azure/ms-rest-browserauth": "^0.1.3",
     "@azure/ms-rest-nodeauth": "^0.9.1",
     "@types/is-buffer": "^2.0.0",
     "async-lock": "^1.1.3",
