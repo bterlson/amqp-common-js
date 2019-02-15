@@ -47,6 +47,18 @@ export interface ConnectionConfig {
    * @property {string} sharedAccessKey - The secret value of the access key.
    */
   sharedAccessKey: string;
+
+  /**
+   * @property {WebSocket} [webSocket] - The WebSocket constructor used to create an AMQP connection
+   * over a WebSocket.
+   */
+  webSocket?: typeof WebSocket;
+
+  /**
+   * @property {string} [webSocketEndpointPath] - The path for the endpoint that accepts an AMQP
+   * connection over WebSockets.
+   */
+  webSocketEndpointPath: string;
 }
 
 /**

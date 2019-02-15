@@ -150,7 +150,7 @@ export module ConnectionContextBase {
       host: parameters.config.host,
       hostname: parameters.config.host,
       username: parameters.config.sharedAccessKeyName,
-      port: typeof WebSocket === 'undefined' ? 5671 : 443,
+      port: 5671,
       reconnect: false,
       properties: {
         product: parameters.connectionProperties.product,
@@ -162,10 +162,15 @@ export module ConnectionContextBase {
       operationTimeoutInSeconds: parameters.operationTimeoutInSeconds
     };
 
-    if (typeof WebSocket !== 'undefined') {
+    if (parameters.config.webSocket) {
+      const socket = parameters.config.webSocket;
+      if (typeof socket !== 'function') {
+        throw new Error('webSocket must be a WebSocket constructor');
+      }
       const ws = rhea.websocket_connect(WebSocket);
-      connectionOptions.connection_details = (ws as any)(`wss://${parameters.config.host}:443/$servicebus/websocket`, ["AMQPWSB10"]) as any;
+      connectionOptions.connection_details = ws(`wss://${parameters.config.host}:443/${parameters.config.webSocketEndpointPath}`, ["AMQPWSB10"], {});
     }
+
     const connection = new Connection(connectionOptions);
     const connectionLock = `${Constants.establishConnection}-${generate_uuid()}`;
     const connectionContextBase: ConnectionContextBase = {
