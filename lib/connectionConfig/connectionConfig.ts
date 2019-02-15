@@ -58,7 +58,7 @@ export interface ConnectionConfig {
    * @property {string} [webSocketEndpointPath] - The path for the endpoint that accepts an AMQP
    * connection over WebSockets.
    */
-  webSocketEndpointPath: string;
+  webSocketEndpointPath?: string;
 }
 
 /**
