@@ -3,6 +3,7 @@
 
 import { parseConnectionString, ServiceBusConnectionStringModel } from "../util/utils";
 import { TokenInfo, TokenProvider, TokenType } from "./token";
+import { Buffer } from "buffer";
 import isBuffer from "is-buffer";
 import jssha from "jssha";
 
