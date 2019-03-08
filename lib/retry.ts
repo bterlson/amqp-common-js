@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 import { translate, MessagingError } from "./errors";
-import { delay } from ".";
+import { delay } from "./util/utils";
 import * as log from "./log";
 import { defaultRetryAttempts, defaultDelayBetweenRetriesInSeconds } from "./util/constants";
 import { resolve } from "dns";
