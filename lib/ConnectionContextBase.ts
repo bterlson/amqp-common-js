@@ -167,7 +167,7 @@ export module ConnectionContextBase {
       if (typeof socket !== 'function') {
         throw new Error('webSocket must be a WebSocket constructor');
       }
-      const ws = rhea.websocket_connect(WebSocket);
+      const ws = rhea.websocket_connect(parameters.config.webSocket);
 
       // connectionOptions is cast to any to work around type errors.
       // The errors seem spurious and so are ignored.
