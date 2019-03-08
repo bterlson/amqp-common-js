@@ -9,8 +9,6 @@ import cjs from "rollup-plugin-commonjs";
 import replace from "rollup-plugin-replace";
 import { uglify } from "rollup-plugin-uglify";
 import sourcemaps from "rollup-plugin-sourcemaps";
-import builtins from "rollup-plugin-node-builtins";
-
 
 import path from "path";
 
@@ -20,7 +18,13 @@ const input = "dist-esm/lib/index.js";
 const production = process.env.NODE_ENV === "production";
 
 export function nodeConfig(test = false) {
-  const externalNodeBuiltins = ['os', 'events', 'net', 'tls', 'path', 'fs', 'url', 'util'];
+  const externalNodeBuiltins = [
+    'os', 'events', 'net', 'tls',
+    'path', 'fs', 'url', 'util',
+    'stream', 'punycode', 'http',
+    'https', 'assert', 'crypto',
+    'timers', 'string_decoder', 'zlib'];
+
   const baseConfig = {
     input: input,
     external: depNames.concat(externalNodeBuiltins),
@@ -65,7 +69,6 @@ export function browserConfig(test = false) {
     plugins: [
       sourcemaps(),
       replace(
-        // ms-rest-js is externalized so users must include it prior to using this bundle.
         {
           delimiters: ["", ""],
           values: {
@@ -80,7 +83,6 @@ export function browserConfig(test = false) {
         preferBuiltins: false,
         browser: true
       }),
-      builtins(),
       cjs()
     ]
   };

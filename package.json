@@ -14,12 +14,16 @@
     "debug": "^3.1.0",
     "is-buffer": "^2.0.3",
     "jssha": "^2.3.1",
+    "path-browserify": "^1.0.0",
     "rhea": "^0.3.9",
-    "tslib": "^1.9.3"
+    "tslib": "^1.9.3",
+    "url": "^0.11.0",
+    "util": "^0.11.1"
   },
   "browser": {
     "./dist/index.js": "./browser/index.js",
-    "./dist-esm/lib/index.node.js": "./dist-esm/lib/index.browser.js"
+    "./dist-esm/lib/index.node.js": "./dist-esm/lib/index.browser.js",
+    "os": "os-browserify"
   },
   "peerDependencies": {
     "rhea-promise": "^0.1.13"
@@ -48,9 +52,8 @@
     "rollup": "^1.1.2",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-multi-entry": "^2.1.0",
-    "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.4.0",
-    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-node-resolve": "^4.0.1",
     "rollup-plugin-replace": "^2.1.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-uglify": "^6.0.2",
