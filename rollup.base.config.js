@@ -9,6 +9,8 @@ import cjs from "rollup-plugin-commonjs";
 import replace from "rollup-plugin-replace";
 import { uglify } from "rollup-plugin-uglify";
 import sourcemaps from "rollup-plugin-sourcemaps";
+import inject from "rollup-plugin-inject";
+import shim from "rollup-plugin-shim";
 
 import path from "path";
 
@@ -46,7 +48,7 @@ export function nodeConfig(test = false) {
 
   if (test) {
     // entry point is every test file
-    baseConfig.input = "dist-esm/test/**/*.spec.js";
+    baseConfig.input = "dist-esm/tests/**/*.spec.js";
     baseConfig.plugins.unshift(multiEntry({ exports: false }));
 
     // different output file
@@ -68,6 +70,7 @@ export function browserConfig(test = false) {
     output: { file: "browser/index.js", format: "umd", name: "Azure.AMQPCommon", sourcemap: true },
     plugins: [
       sourcemaps(),
+
       replace(
         {
           delimiters: ["", ""],
@@ -79,16 +82,36 @@ export function browserConfig(test = false) {
           }
         }
       ),
+
+      // dotenv doesn't work in the browser, so replace it with a no-op function
+      shim({
+        dotenv: `export function config() { }`
+      }),
+
       nodeResolve({
         preferBuiltins: false,
         browser: true
       }),
-      cjs()
+
+      cjs({
+        namedExports: {
+          "chai": ["should"],
+          "assert": ["equal", "deepEqual", "notEqual"]
+        }
+      }),
+
+      // rhea and rhea-promise use the Buffer global which requires
+      // injection to shim properly
+      inject({
+        modules: {
+          Buffer: ["buffer", "Buffer"]
+        }
+      }),
     ]
   };
 
   if (test) {
-    baseConfig.input = "dist-esm/test/**/*.spec.js";
+    baseConfig.input = "dist-esm/tests/**/*.spec.js";
     baseConfig.plugins.unshift(multiEntry({ exports: false }));
     baseConfig.output.file = "test-browser/index.js";
   } else if (production) {

@@ -3,4 +3,5 @@
 
 import * as base from "./rollup.base.config";
 
-export default [base.nodeConfig(true) /*, base.browserConfig(true)*/];
+// Node tests are run via ts-node
+export default [base.browserConfig(true)];
