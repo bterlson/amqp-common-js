@@ -34,3 +34,11 @@ export {
   Func, ParsedOutput, getNewAsyncLock, AsyncLockOptions, ServiceBusConnectionStringModel,
   isIotHubConnectionString, randomNumberFromInterval, AsyncLock
 } from "./util/utils";
+
+
+// simple process shim for the browser
+if (typeof process === 'undefined') {
+  (window as any).process = {
+    env: {}
+  };
+}
