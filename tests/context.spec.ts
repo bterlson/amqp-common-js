@@ -42,7 +42,7 @@ describe("ConnectionContextBase", function () {
   });
 
   if (isNode) {
-    it.only("should accept a websocket constructor in Node", async () => {
+    it("should accept a websocket constructor in Node", async () => {
       const connectionString = "Endpoint=sb://hostname.servicebus.windows.net/;SharedAccessKeyName=sakName;SharedAccessKey=sak;EntityPath=ep";
       const path = "mypath";
       const config = ConnectionConfig.create(connectionString, path);
@@ -62,12 +62,11 @@ describe("ConnectionContextBase", function () {
       should.exist(context);
     });
   } else {
-    it.only("should accept a websocket constructor in browser", async () => {
+    it("should default to using a websocket in the browser", async () => {
       const connectionString = "Endpoint=sb://hostname.servicebus.windows.net/;SharedAccessKeyName=sakName;SharedAccessKey=sak;EntityPath=ep";
       const path = "mypath";
       const config = ConnectionConfig.create(connectionString, path);
 
-      config.webSocket = WebSocket
       config.webSocketEndpointPath = '/ws';
 
       const context = ConnectionContextBase.create({
@@ -80,6 +79,7 @@ describe("ConnectionContextBase", function () {
       });
 
       should.exist(context);
+      should.exist(context.connection.options.connection_details);
     });
   }
 });

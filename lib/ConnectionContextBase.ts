@@ -162,14 +162,9 @@ export module ConnectionContextBase {
       operationTimeoutInSeconds: parameters.operationTimeoutInSeconds
     };
 
-    if (parameters.config.webSocket) {
-      const socket = parameters.config.webSocket;
-      if (typeof socket !== 'function') {
-        throw new Error('webSocket must be a WebSocket constructor');
-      }
-
-      const ws = rhea.websocket_connect(parameters.config.webSocket);
-
+    if (parameters.config.webSocket || typeof WebSocket !== 'undefined') {
+      const socket = parameters.config.webSocket || WebSocket;
+      const ws = rhea.websocket_connect(socket);
       const host = parameters.config.host;
       const endpoint = parameters.config.webSocketEndpointPath || '';
 

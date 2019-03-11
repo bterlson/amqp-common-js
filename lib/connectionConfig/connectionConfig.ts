@@ -50,7 +50,8 @@ export interface ConnectionConfig {
 
   /**
    * @property {WebSocket} [webSocket] - The WebSocket constructor used to create an AMQP connection
-   * over a WebSocket.
+   * over a WebSocket. In browsers, the built-in WebSocket will be  used by default. In Node, a
+   * TCP socket will be used if a WebSocket constructor is not provided.
    */
   webSocket?: typeof WebSocket;
 
@@ -85,6 +86,7 @@ export namespace ConnectionConfig {
     }
 
     if (!parsedCS.Endpoint.endsWith("/")) parsedCS.Endpoint += "/";
+
     const result: ConnectionConfig = {
       connectionString: connectionString,
       endpoint: parsedCS.Endpoint,
@@ -92,6 +94,7 @@ export namespace ConnectionConfig {
       sharedAccessKeyName: parsedCS.SharedAccessKeyName,
       sharedAccessKey: parsedCS.SharedAccessKey
     };
+
     if (path || parsedCS.EntityPath) result.entityPath = path || parsedCS.EntityPath;
     return result;
   }
