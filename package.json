@@ -21,7 +21,7 @@
     "stream-browserify": "^2.0.2",
     "tslib": "^1.9.3",
     "url": "^0.11.0",
-    "util": "^0.11.1",
+    "util": "^0.11.1"
   },
   "browser": {
     "./dist/index.js": "./browser/index.js",
