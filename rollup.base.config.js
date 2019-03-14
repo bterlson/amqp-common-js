@@ -115,7 +115,8 @@ export function browserConfig(test = false) {
       // injection to shim properly
       inject({
         modules: {
-          Buffer: ["buffer", "Buffer"]
+          Buffer: ["buffer", "Buffer"],
+          process: "process"
         }
       }),
     ]
