@@ -16,8 +16,6 @@
     "events": "^3.0.0",
     "is-buffer": "^2.0.3",
     "jssha": "^2.3.1",
-    "path-browserify": "^1.0.0",
-    "os-browserify": "^0.3.0",
     "stream-browserify": "^2.0.2",
     "tslib": "^1.9.3",
     "url": "^0.11.0",
@@ -27,7 +25,6 @@
     "./dist/index.js": "./browser/index.js",
     "./dist-esm/lib/index.node.js": "./dist-esm/lib/index.browser.js",
     "buffer": "buffer",
-    "os": "os-browserify",
     "stream": "stream-browserify"
   },
   "peerDependencies": {
