@@ -164,6 +164,7 @@ export module ConnectionContextBase {
 
     if (parameters.config.webSocket || typeof WebSocket !== 'undefined') {
       const socket = parameters.config.webSocket || WebSocket;
+      // TODO: expose websocket_connect via rhea-promise
       const ws = rhea.websocket_connect(socket);
       const host = parameters.config.host;
       const endpoint = parameters.config.webSocketEndpointPath || '';

@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
+/// <reference lib="es2015" />
+
 export { RequestResponseLink, SendRequestOptions } from "./requestResponseLink";
 export { retry, RetryConfig, RetryOperationType } from "./retry";
 export { DataTransformer, DefaultDataTransformer } from "./dataTransformer";

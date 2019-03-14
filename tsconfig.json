@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "module": "es2015",
+    "lib": [],
     "preserveConstEnums": true,
     "sourceMap": true,
     "newLine": "LF",
