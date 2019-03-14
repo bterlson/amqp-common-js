@@ -162,8 +162,8 @@ export module ConnectionContextBase {
       operationTimeoutInSeconds: parameters.operationTimeoutInSeconds
     };
 
-    if (parameters.config.webSocket || typeof WebSocket !== 'undefined') {
-      const socket = parameters.config.webSocket || WebSocket;
+    if (parameters.config.webSocket || typeof (window as any).WebSocket !== 'undefined') {
+      const socket = parameters.config.webSocket || (window as any).WebSocket;
       // TODO: expose websocket_connect via rhea-promise
       const ws = rhea.websocket_connect(socket);
       const host = parameters.config.host;

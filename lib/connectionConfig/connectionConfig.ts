@@ -4,6 +4,26 @@
 import { parseConnectionString, ServiceBusConnectionStringModel } from "../util/utils";
 
 /**
+ * Describes the required shape of WebSocket instances.
+ * @interface WebSocketInstance
+ */
+export interface WebSocketInstance {
+  send: Function;
+  onmessage: Function | null;
+  onopen: Function | null;
+  onclose: Function | null;
+  onerror: Function | null;
+}
+
+/**
+ * Describes the required shape of WebSocket constructors.
+ * @interface WebSocketImpl
+ */
+export interface WebSocketImpl {
+  new(url: string, protocols?: string | string[]): WebSocketInstance;
+}
+
+/**
  * Describes the options that can be provided while creating a connection config.
  * @interface ConnectionConfigOptions
  */
@@ -49,11 +69,11 @@ export interface ConnectionConfig {
   sharedAccessKey: string;
 
   /**
-   * @property {WebSocket} [webSocket] - The WebSocket constructor used to create an AMQP connection
+   * @property {WebSocketImpl} [webSocket] - The WebSocket constructor used to create an AMQP connection
    * over a WebSocket. In browsers, the built-in WebSocket will be  used by default. In Node, a
    * TCP socket will be used if a WebSocket constructor is not provided.
    */
-  webSocket?: typeof WebSocket;
+  webSocket?: WebSocketImpl;
 
   /**
    * @property {string} [webSocketEndpointPath] - The path for the endpoint that accepts an AMQP
