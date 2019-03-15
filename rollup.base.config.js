@@ -15,7 +15,8 @@ import shim from "rollup-plugin-shim";
 import path from "path";
 
 const pkg = require("./package.json");
-const depNames = Object.keys(pkg.dependencies);
+const depNames = Object.keys(pkg.dependencies).concat(Object.keys(pkg.peerDependencies));
+
 const input = "dist-esm/lib/index.js";
 const production = process.env.NODE_ENV === "production";
 
