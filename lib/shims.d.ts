@@ -4,6 +4,10 @@
 // d.ts shims provide types for things we use internally but are not part
 // of amqp-common's surface area.
 
-// Shim for DOM's window
-interface Window { }
+// Shim for DOM's window and navigator's onLine status
+interface Window {
+  navigator: {
+    onLine: boolean;
+  }
+}
 declare var window: Window;

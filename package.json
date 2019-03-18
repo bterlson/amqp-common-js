@@ -80,7 +80,7 @@
     "build": "npm run tslint && npm run tsc && cross-env rollup -c",
     "build:browser-test": "npm run tslint && npm run tsc && rollup -c rollup.test.config.js",
     "test": "npm run build && npm run unit",
-    "unit": "cross-env TS_NODE_COMPILER_OPTIONS=\"{\\\"module\\\":\\\"commonjs\\\"}\" nyc --reporter=lcov --reporter=text-lcov mocha -r ts-node/register -t 50000 ./tests/**/*.spec.ts",
+    "unit": "cross-env TS_NODE_FILES=true TS_NODE_COMPILER_OPTIONS=\"{\\\"module\\\":\\\"commonjs\\\"}\" nyc --reporter=lcov --reporter=text-lcov mocha -r ts-node/register -t 50000 ./tests/**/*.spec.ts",
     "test:browser": "npm run build:browser-test && karma start",
     "prepack": "npm i && npm run build"
   },
