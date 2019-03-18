@@ -11,6 +11,7 @@ import { uglify } from "rollup-plugin-uglify";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import inject from "rollup-plugin-inject";
 import shim from "rollup-plugin-shim";
+import json from "rollup-plugin-json";
 
 import path from "path";
 
@@ -26,7 +27,8 @@ export function nodeConfig(test = false) {
     'path', 'fs', 'url', 'util',
     'stream', 'punycode', 'http',
     'https', 'assert', 'crypto',
-    'timers', 'string_decoder', 'zlib'];
+    'timers', 'string_decoder', 'zlib',
+    'dns'];
 
   const baseConfig = {
     input: input,
@@ -43,7 +45,8 @@ export function nodeConfig(test = false) {
         }
       }),
       nodeResolve({ preferBuiltins: true }),
-      cjs()
+      cjs(),
+      json()
     ]
   };
 
@@ -97,7 +100,8 @@ export function browserConfig(test = false) {
           export function type() { return "Browser" }
           export function release() { typeof navigator === 'undefined' ? '' : navigator.appVersion }
         `,
-        path: `export default {}`
+        path: `export default {}`,
+        dns: `export function resolve() { }`
       }),
 
       nodeResolve({
@@ -120,6 +124,8 @@ export function browserConfig(test = false) {
           process: "process"
         }
       }),
+
+      json()
     ]
   };
 
